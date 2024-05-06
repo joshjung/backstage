@@ -1,5 +1,16 @@
 # @backstage/plugin-catalog-backend-module-github
 
+## 0.6.1-next.2
+
+### Patch Changes
+
+- f2a2a83: Updated to use the new `catalogAnalysisExtensionPoint` API.
+- Updated dependencies
+  - @backstage/plugin-catalog-node@1.12.0-next.2
+  - @backstage/plugin-catalog-backend@1.22.0-next.2
+  - @backstage/backend-common@0.22.0-next.2
+  - @backstage/integration@1.11.0-next.0
+
 ## 0.6.1-next.1
 
 ### Patch Changes
