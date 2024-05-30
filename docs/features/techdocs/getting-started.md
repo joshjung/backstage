@@ -4,22 +4,23 @@ title: Getting Started
 description: Getting Started Documentation
 ---
 
-TechDocs functions as a plugin to Backstage, so you will need to use Backstage
-to use TechDocs.
+TechDocs is a Backstage plugin that can either generate documentation on its own by consuming Markdown files that you
+specify or it can consume documentation that you build and host externally.
 
-If you haven't setup Backstage already, start
-[here](../../getting-started/index.md).
+Either way, the result is a collection of documents that are searchable and viewable within the Backstage application.
 
-> If you used `npx @backstage/create-app`, TechDocs may already be present.
->
-> You should skip to [`Setting the Configuration`](#setting-the-configuration)
-> below.
+## Add Frontend Plugin
 
-## Adding TechDocs frontend plugin
+:::note Note
 
-The first step is to add the TechDocs plugin to your Backstage application.
-Navigate to your new Backstage application directory. And then to your
-`packages/app` directory, and install the `@backstage/plugin-techdocs` package.
+If you used `npx @backstage/create-app`, TechDocs plugins for both frontend and backend may already be present.
+
+If so, you should skip to [`TechDocs Configuration`](#techdocs-configuration) below.
+
+:::
+
+Navigate to your new Backstage application directory and to your
+`packages/app` directory and install the `@backstage/plugin-techdocs` package:
 
 ```bash
 # From your Backstage root directory
@@ -52,67 +53,18 @@ const AppRoutes = () => {
 };
 ```
 
-It would be nice to decorate your pages with something else... Having a link that redirects you to a new issue page when you highlight text in your documentation would be really cool, right? Let's learn how to do this using the TechDocs Addon Framework!
+## Add Backend Plugin (legacy)
 
-With the [TechDocs Addon framework](https://backstage.io/docs/features/techdocs/addons#installing-and-using-addons), you can render React components in documentation pages and these Addons can be provided by any Backstage plugin. The framework is exported by the [@backstage/plugin-techdocs-react](https://www.npmjs.com/package/@backstage/plugin-techdocs-react) package and there is a `<ReportIssue />` Addon in the [@backstage/plugin-techdocs-module-addons-contrib](https://www.npmjs.com/package/@backstage/plugin-techdocs-module-addons-contrib) package for you to use once you have these two dependencies installed:
+> Note: if you are using the New Backend System, skip to the next section below.
 
-```tsx
-import {
-  DefaultTechDocsHome,
-  TechDocsIndexPage,
-  TechDocsReaderPage,
-} from '@backstage/plugin-techdocs';
-/* highlight-add-start */
-import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
-import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-/* highlight-add-end */
-
-const AppRoutes = () => {
-  <FlatRoutes>
-    {/* ... other plugin routes */}
-    <Route path="/docs" element={<TechDocsIndexPage />}>
-      <DefaultTechDocsHome />
-    </Route>
-    <Route
-      path="/docs/:namespace/:kind/:name/*"
-      element={<TechDocsReaderPage />}
-    >
-      {/* highlight-add-start */}
-      <TechDocsAddons>
-        <ReportIssue />
-      </TechDocsAddons>
-      {/* highlight-add-end */}
-    </Route>
-  </FlatRoutes>;
-};
-```
-
-I know, you're curious to see how it looks, aren't you? See the image below:
-
-<!-- todo: Needs zoomable plugin -->
-
-![TechDocs Report Issue Add-on](../../assets/techdocs/report-issue-addon.png)
-
-By clicking the open new issue button, you will be redirected to the new issue page according to the source code provider you are using:
-
-<!-- todo: Needs zoomable plugin -->
-
-![TechDocs Report Issue Template](../../assets/techdocs/report-issue-template.png)
-
-That's it! Now, we need the TechDocs Backend plugin for the frontend to work.
-
-## Adding TechDocs Backend plugin
-
-Navigate to `packages/backend` of your Backstage app, and install the
-`@backstage/plugin-techdocs-backend` package.
+Navigate to `packages/backend` of your Backstage app, and install the `@backstage/plugin-techdocs-backend` package.
 
 ```bash
 # From your Backstage root directory
 yarn --cwd packages/backend add @backstage/plugin-techdocs-backend
 ```
 
-Create a file called `techdocs.ts` inside `packages/backend/src/plugins/` and
-add the following
+Create a file called `techdocs.ts` inside `packages/backend/src/plugins/` and add the following:
 
 ```typescript
 import { DockerContainerRunner } from '@backstage/backend-common';
@@ -168,20 +120,17 @@ export default async function createPlugin(
 }
 ```
 
-You may need to install the `dockerode` package. But you may already have it in
-your backend since [Scaffolder plugin](../software-templates/index.md) also uses
-it.
+> Note: You may need to install the `dockerode` package. But you may already have it in your backend since
+> [Scaffolder plugin](../software-templates/index.md) also uses it.
 
-See [Concepts](concepts.md) and [TechDocs Architecture](architecture.md) to
-learn more about how preparers, generators and publishers work.
+See [Concepts](concepts.md) and [TechDocs Architecture](architecture.md) to learn more about how preparers, generators and publishers work.
 
-The final step is to import the techdocs backend plugin in Backstage app
-backend. Add the following to your `packages/backend/src/index.ts`:
+The final step is to import the techdocs backend plugin in Backstage app backend:
 
-```typescript
+```typescript title="packages/backend/src/index.ts"
 import techdocs from './plugins/techdocs';
 
-// .... main should already be present.
+// ... main should already be present.
 async function main() {
   // ... other backend plugin envs
   const techdocsEnv = useHotMemoize(module, () => createEnv('techdocs'));
@@ -191,59 +140,68 @@ async function main() {
 }
 ```
 
-That's it! TechDocs frontend and backend have now been added to your Backstage
-app. Now let us tweak some configurations to suit your needs.
+That's it! TechDocs frontend and backend have now been added to your Backstage app.
 
-### New Backend System
+### Add Backend Plugin (New Backend System)
 
 To install TechDocs when using the New Backend system you will need to do the following.
 
-Navigate to `packages/backend` of your Backstage app, and install the `@backstage/plugin-techdocs-backend` package.
+Navigate to `packages/backend` of your Backstage app, and install the `@backstage/plugin-techdocs-backend` package:
 
 ```bash
 # From your Backstage root directory
 yarn --cwd packages/backend add @backstage/plugin-techdocs-backend
 ```
 
-Then in your backend `index.ts` you will add the following line.
+Next in your backend `index.ts` you will add the following line:
 
 ```ts title="packages/backend/src/index.ts"
 const backend = createBackend();
 
-// Other plugins...
+// ...
 
 /* highlight-add-start */
 backend.add(import('@backstage/plugin-techdocs-backend/alpha'));
 /* highlight-add-end */
+
+// ...
 
 backend.start();
 ```
 
 :::note Note
 
-The above is a very simplified example, you may have more content then this in your version.
+The above is a very simplified example, you may have more content than this in your version.
 
 :::
 
-## Setting the configuration
+## TechDocs Configuration
 
-**See [TechDocs Configuration Options](configuration.md) for complete
-configuration reference.**
+:::note Note
 
-### Should TechDocs Backend generate docs?
+For full TechDocs configuration options, see [TechDocs Configuration Options](configuration.md).
 
-```yaml
+:::
+
+### Locally Generated TechDocs
+
+TechDocs can be generated and checked into your code repository or they can be generated during your CI/CD process.
+
+To generate locally and get started quickly set `techdocs.builder` to `'local'` so that TechDocs Backend is responsible
+for generating documentation pages:
+
+```yaml title="app-config.yaml"
 techdocs:
   builder: 'local'
 ```
 
-Note that we recommend generating docs on CI/CD instead. Read more in the
-"Basic" and "Recommended" sections of the
-[TechDocs Architecture](architecture.md). But if you want to get started quickly
-set `techdocs.builder` to `'local'` so that TechDocs Backend is responsible for
-generating documentation sites. If set to `'external'`, Backstage will assume
-that the sites are being generated on each entity's CI/CD pipeline, and are
-being stored in a storage somewhere.
+### External TechDocs
+
+We recommend generating docs during CI/CD and storing them externally. For more information, see the
+"Basic" and "Recommended" sections of the [TechDocs Architecture](architecture.md) on this topic.
+
+If you set `builder: 'external'`, Backstage will assume that the sites are being generated on
+each entity's CI/CD pipeline, and are being stored in an external storage.
 
 When `techdocs.builder` is set to `'external'`, TechDocs becomes more or less a
 read-only experience where it serves static files from a storage containing all
@@ -334,6 +292,62 @@ Note: We recommend Python version 3.11 or higher.
 > Caveat: Please install the `mkdocs-techdocs-core` package after all other
 > Python packages. The order is important to make sure we get correct version of
 > some of the dependencies.
+
+## TechDocs Addon Framework
+
+It would be nice to decorate your pages with something else... Having a link that redirects you to a new issue page when
+you highlight text in your documentation would be really cool, right? Let's learn how to do this using the TechDocs Addon
+Framework!
+
+With the [TechDocs Addon framework](https://backstage.io/docs/features/techdocs/addons#installing-and-using-addons), you can render React components in documentation pages and these Addons can be
+provided by any Backstage plugin. The framework is exported by the [@backstage/plugin-techdocs-react](https://www.npmjs.com/package/@backstage/plugin-techdocs-react) package and
+there is a `<ReportIssue />` Addon in the [@backstage/plugin-techdocs-module-addons-contrib](https://www.npmjs.com/package/@backstage/plugin-techdocs-module-addons-contrib) package for you to use
+once you have these two dependencies installed:
+
+```tsx
+import {
+  DefaultTechDocsHome,
+  TechDocsIndexPage,
+  TechDocsReaderPage,
+} from '@backstage/plugin-techdocs';
+/* highlight-add-start */
+import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
+import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
+/* highlight-add-end */
+
+const AppRoutes = () => {
+  <FlatRoutes>
+    {/* ... other plugin routes */}
+    <Route path="/docs" element={<TechDocsIndexPage />}>
+      <DefaultTechDocsHome />
+    </Route>
+    <Route
+      path="/docs/:namespace/:kind/:name/*"
+      element={<TechDocsReaderPage />}
+    >
+      {/* highlight-add-start */}
+      <TechDocsAddons>
+        <ReportIssue />
+      </TechDocsAddons>
+      {/* highlight-add-end */}
+    </Route>
+  </FlatRoutes>;
+};
+```
+
+I know, you're curious to see how it looks, aren't you? See the image below:
+
+<!-- todo: Needs zoomable plugin -->
+
+![TechDocs Report Issue Add-on](../../assets/techdocs/report-issue-addon.png)
+
+By clicking the open new issue button, you will be redirected to the new issue page according to the source code provider you are using:
+
+<!-- todo: Needs zoomable plugin -->
+
+![TechDocs Report Issue Template](../../assets/techdocs/report-issue-template.png)
+
+That's it! Now, we need the TechDocs Backend plugin for the frontend to work.
 
 ## Additional reading
 

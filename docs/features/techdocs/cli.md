@@ -5,10 +5,7 @@ title: TechDocs CLI
 description: TechDocs CLI - a utility command line interface for managing TechDocs sites in Backstage.
 ---
 
-Utility command line interface for managing TechDocs sites in
-[Backstage](https://github.com/backstage/backstage).
-
-https://backstage.io/docs/features/techdocs/
+Command line interface for managing TechDocs pages.
 
 ## Features
 
@@ -16,8 +13,25 @@ https://backstage.io/docs/features/techdocs/
 - Supports generation and publishing of a documentation site in a CI/CD
   workflow.
 
+## Installation
+
+You can always use [`npx`](https://github.com/npm/npx) to run the latest version of `techdocs-cli`:
+
 ```bash
-techdocs-cli --help
+$ npx @techdocs/cli [command]
+```
+
+Or you can install it using [npm](https://www.npmjs.com/package/@techdocs/cli):
+
+```bash
+$ npm install -g @techdocs/cli
+$ techdocs-cli [command]
+```
+
+## Usage
+
+```bash
+$ techdocs-cli --help
 Usage: techdocs-cli [options] [command]
 
 Options:
@@ -34,24 +48,6 @@ Commands:
   help [command]            display help for command
 ```
 
-## Installation
-
-You can always use [`npx`](https://github.com/npm/npx) to run the latest version
-of `techdocs-cli` -
-
-```bash
-npx @techdocs/cli [command]
-```
-
-Or you can install it using [npm](https://www.npmjs.com/package/@techdocs/cli) -
-
-```bash
-npm install -g @techdocs/cli
-techdocs-cli [command]
-```
-
-## Usage
-
 ### Preview TechDocs site locally in a Backstage like environment
 
 ```bash
@@ -60,23 +56,19 @@ techdocs-cli serve
 
 ![A preview of techdocs-cli serve command](../../assets/features/techdocs/techdocs-cli-serve-preview.png)
 
-By default, Docker and
-[techdocs-container](https://github.com/backstage/techdocs-container) is used to
-make sure all the dependencies are installed. However, Docker can be disabled
-with `--no-docker` flag.
+By default, Docker and [techdocs-container](https://github.com/backstage/techdocs-container) is used to make sure all
+the dependencies are installed. However, Docker can be disabled with `--no-docker` flag.
 
-The command starts two local servers - an MkDocs preview server on port 8000 and
-a Backstage app server on port 3000. The Backstage app has a custom TechDocs API
-implementation, which uses the MkDocs preview server as a proxy to fetch the
+The command starts two local servers - an MkDocs preview server on port 8000 and a Backstage app server on port 3000.
+The Backstage app has a custom TechDocs API implementation, which uses the MkDocs preview server as a proxy to fetch the
 generated documentation files and assets.
 
-Backstage instances might differ from the provided preview app in appearance and
-behavior. To preview documentation with a different app, use
-`--preview-app-bundle-path` with a path to the bundle of the app to use instead.
-Typically, a `dist` or `build` directory.
+Backstage instances might differ from the provided preview app in appearance and behavior. To preview documentation with
+a different app, use `--preview-app-bundle-path` with a path to the bundle of the app to use instead. Typically, a
+`dist` or `build` directory.
 
-NOTE: When using a custom `techdocs` docker image, make sure the entry point is
-also `ENTRYPOINT ["mkdocs"]` or override with `--docker-entrypoint`.
+NOTE: When using a custom `techdocs` docker image, make sure the entry point is also `ENTRYPOINT ["mkdocs"]` or override
+with `--docker-entrypoint`.
 
 Command reference:
 
@@ -113,15 +105,12 @@ Alias: `techdocs-cli build`
 
 The generate command uses the
 [`@backstage/plugin-techdocs-node`](https://github.com/backstage/backstage/tree/master/plugins/techdocs-node)
-package from Backstage for consistency. A Backstage app can also generate and
-publish TechDocs sites if `techdocs.builder` is set to `'local'` in
-`app-config.yaml`. See
+package from Backstage for consistency. A Backstage app can also generate and publish TechDocs sites if
+`techdocs.builder` is set to `'local'` in `app-config.yaml`. See
 [configuration reference](https://backstage.io/docs/features/techdocs/configuration).
 
-By default, this command uses Docker and
-[techdocs-container](https://github.com/backstage/techdocs-container) to make
-sure all the dependencies are installed. But it can be disabled using
-`--no-docker` flag.
+By default, this command uses Docker and [techdocs-container](https://github.com/backstage/techdocs-container) to make
+sure all the dependencies are installed. But it can be disabled using `--no-docker` flag.
 
 Command reference:
 
@@ -161,18 +150,14 @@ Options:
 techdocs-cli publish --publisher-type <awsS3|googleGcs|azureBlobStorage> --storage-name <bucket/container name> --entity <namespace/kind/name>
 ```
 
-After generating a TechDocs site using `techdocs-cli generate`, use the publish
-command to upload the static generated files on a cloud storage (AWS/GCS) bucket
-or (Azure) container which your Backstage app can read from.
+After generating a TechDocs site using `techdocs-cli generate`, use the publish command to upload the static generated
+files on a cloud storage (AWS/GCS) bucket or (Azure) container which your Backstage app can read from.
 
-The value for `--entity` must be the Backstage entity which the generated
-TechDocs site belongs to. You can find the values in your Entity's
-`catalog-info.yaml` file. If namespace is missing in the `catalog-info.yaml`,
-use `default`. The directory structure used in the storage bucket is
-`namespace/kind/name/<files>`.
+The value for `--entity` must be the Backstage entity which the generated TechDocs site belongs to. You can find the
+values in your Entity's `catalog-info.yaml` file. If namespace is missing in the `catalog-info.yaml`, use `default`. The
+directory structure used in the storage bucket is `namespace/kind/name/<files>`.
 
-Note that the values are case-sensitive. An example for `--entity` is
-`default/Component/<entityName>`.
+Note that the values are case-sensitive. An example for `--entity` is `default/Component/<entityName>`.
 
 Command reference:
 
@@ -208,7 +193,9 @@ Options:
 
 #### Publishing from behind a proxy
 
-For users attempting to publish TechDocs content behind a proxy, the TechDocs CLI leverages `global-agent` to navigate the proxy to successfully connect to that location. To enable `global-agent`, the following variables need to be set prior to running the techdocs-cli command:
+For users attempting to publish TechDocs content behind a proxy, the TechDocs CLI leverages `global-agent` to navigate
+the proxy to successfully connect to that location. To enable `global-agent`, the following variables need to be set
+prior to running the techdocs-cli command:
 
 ```bash
 export GLOBAL_AGENT_HTTPS_PROXY=${HTTP_PROXY}
@@ -217,51 +204,44 @@ export GLOBAL_AGENT_NO_PROXY=${NO_PROXY}
 
 ### Migrate content for case-insensitive access
 
-Prior to the beta version of TechDocs (`v[0.11.0]`), TechDocs were stored in
-object storage using a case-sensitive entity triplet (e.g.
-`default/API/name/index.html`). This resulted in a limitation where that exact
-case was required in the Backstage URL in order to read/render TechDocs content.
-As of `v[0.11.0]` of the TechDocs plugin, any case is allowed in the URL (e.g.
-`default/api/name`), matching the behavior of the Catalog plugin.
+Prior to the beta version of TechDocs (`v[0.11.0]`), TechDocs were stored in object storage using a case-sensitive
+entity triplet (e.g. `default/API/name/index.html`). This resulted in a limitation where that exact case was required
+in the Backstage URL in order to read/render TechDocs content. As of `v[0.11.0]` of the TechDocs plugin, any case is
+allowed in the URL (e.g. `default/api/name`), matching the behavior of the Catalog plugin.
 
-Backstage instances created with TechDocs `v[0.11.0]` or later do not need this
-command. However, when upgrading to this version from an older version of
-TechDocs, the `migrate` command can be used prior to deployment to ensure docs
+Backstage instances created with TechDocs `v[0.11.0]` or later do not need this command. However, when upgrading to
+this version from an older version of TechDocs, the `migrate` command can be used prior to deployment to ensure docs
 remain accessible without having to rebuild all docs.
 
-Prior to upgrading to `v[0.11.0]` or greater, run this command to copy all
-assets to their lower-case triplet equivalents like this:
+Prior to upgrading to `v[0.11.0]` or greater, run this command to copy all assets to their lower-case triplet
+equivalents like this:
 
 ```bash
 techdocs-cli migrate --publisher-type <awsS3|googleGcs|azureBlobStorage> --storage-name <bucket/container name> --verbose
 ```
 
-Once migrated and the upgraded version of the Backstage plugin has been
-deployed, you can clean up the legacy, case-sensitive triplet files by
-re-running the command with the `--removeOriginal` flag passed, which _moves_
-(rather than copies) the files. Note: this deletes files and is therefore a
-destructive operation that should performed with caution.
+Once migrated and the upgraded version of the Backstage plugin has been deployed, you can clean up the legacy,
+case-sensitive triplet files by re-running the command with the `--removeOriginal` flag passed, which _moves_ (rather
+than copies) the files. Note: this deletes files and is therefore a destructive operation that should performed with
+caution.
 
 ```bash
 techdocs-cli migrate --publisher-type <awsS3|googleGcs|azureBlobStorage> --storage-name <bucket/container name> --removeOriginal --verbose
 ```
 
-Afterward, update your TechDocs CLI to `v[0.7.0]` to ensure further publishing
-happens using a lower-case entity triplet.
+Afterward, update your TechDocs CLI to `v[0.7.0]` to ensure further publishing happens using a lower-case entity
+triplet.
 
-Note: arguments for this command largely match those of the `publish` command,
-depending on your chosen storage provider. Run `techdocs-cli migrate --help` for
-details.
+Note: arguments for this command largely match those of the `publish` command, depending on your chosen storage
+provider. Run `techdocs-cli migrate --help` for details.
 
 #### Authentication
 
-You need to make sure that your environment is able to authenticate with the
-target cloud provider. `techdocs-cli` uses the official Node.js clients provided
-by AWS (v3), Google Cloud and Azure. You can authenticate using environment
+You need to make sure that your environment is able to authenticate with the target cloud provider. `techdocs-cli` uses
+the official Node.js clients provided by AWS (v3), Google Cloud and Azure. You can authenticate using environment
 variables and/or by other means (`~/.aws/credentials`, `~/.config/gcloud` etc.)
 
-Refer to the Authentication section of the following documentation depending
-upon your cloud storage provider -
+Refer to the Authentication section of the following documentation depending upon your cloud storage provider:
 
 - [Google Cloud Storage](https://backstage.io/docs/features/techdocs/using-cloud-storage#configuring-google-gcs-bucket-with-techdocs)
 - [AWS S3](https://backstage.io/docs/features/techdocs/using-cloud-storage#configuring-aws-s3-bucket-with-techdocs)
@@ -269,7 +249,6 @@ upon your cloud storage provider -
 
 ## Development
 
-You are welcome to contribute to TechDocs CLI to improve it and support new
-features! See the project
+You are welcome to contribute to TechDocs CLI to improve it and support new features! See the project
 [README](https://github.com/backstage/backstage/blob/main/src/packages/techdocs-cli/README.md)
 for more information.

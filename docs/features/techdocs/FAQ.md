@@ -7,11 +7,48 @@ description: This page answers frequently asked questions about TechDocs
 
 This page answers frequently asked questions about [TechDocs](README.md).
 
-## Technology
+## Questions
 
+- [Why do you have separate "basic" and "recommended" deployment approaches?](#why-do-you-have-separate-basic-and-recommended-deployment-approaches)
+- [Why don't you recommend techdocs-backend local filesystem to serve static files?](#why-dont-you-recommend-techdocs-backend-local-filesystem-to-serve-static-files)
+- [Why aren't docs built on the fly i.e. when users visits a page, generate docs site in real-time?](#why-arent-docs-built-on-the-fly-ie-when-users-visits-a-page-generate-docs-site-in-real-time)
+- [Can you use the techdocs plugin without the techdocs-backend plugin?](#can-you-use-the-techdocs-plugin-without-the-techdocs-backend-plugin)
 - [What static site generator is TechDocs using?](#what-static-site-generator-is-techdocs-using)
 - [What is the mkdocs-techdocs-core plugin?](#what-is-the-mkdocs-techdocs-core-plugin)
 - [Does TechDocs support file formats other than Markdown (e.g. RST, AsciiDoc)?](#does-techdocs-support-file-formats-other-than-markdown-eg-rst-asciidoc-)
+
+#### Why do you have separate "basic" and "recommended" deployment approaches?
+
+The basic or out-of-the-box setup is what you get when you create a new app using `npx` or do a `git clone` of the
+Backstage repository. We want the first experience to _just work_ so that you can experience TechDocs with little
+effort. However, if you decide to deploy TechDocs for production use, the basic setup would work but there are going to
+be downsides as you scale the number of documentation pages. So you would want to make sure the deployment is as
+scalable as possible and therefore we recommend using external storage with caching, etc.
+
+#### Why don't you recommend techdocs-backend local filesystem to serve static files?
+
+It makes scaling a Backstage instance harder. Think about the case where we have distributed Backstage deployments
+(e.g. multiple Kubernetes pods of your Backstage app). Using a separate/central file storage system for TechDocs is
+necessary to make sure sites are persistent when the servers/pods are restarted and avoid duplicating sites per
+instance. By having an external storage, we are making it easier to do some operations like delete a docs site or wipe
+its contents.
+
+#### Why aren't docs built on the fly i.e. when users visits a page, generate docs site in real-time?
+
+Generating the content from Markdown on the fly is not optimal. Storage solutions act as a cache for the generated
+static content. TechDocs is also currently built on MkDocs which does not allow us to generate docs per-page, so we
+would have to build all docs for a entity on every request.
+
+#### Can you use the techdocs plugin without the techdocs-backend plugin?
+
+`techdocs` and `techdocs-backend` plugins are designed to be used together, like any other Backstage plugin with a
+frontend and its backend (catalog, scaffolder, etc.). If you set your Backstage instance to generate docs on the server,
+`techdocs-backend` will be responsible for managing the whole build process, making sure it's scalable. It is
+responsible for securely communicating with the cloud storage provider, for both fetching static generated sites and
+publishing the updates. There are other planned features like an authentication layer for users to determine whether
+they have the permission to view a particular docs site. There are a handful of features which are extremely hard to
+develop without a tightly integrated backend in place. Hence, support for `techdocs` without `techdocs-backend` is
+limited and challenging to develop.
 
 #### What static site generator is TechDocs using?
 

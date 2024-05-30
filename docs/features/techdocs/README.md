@@ -1,6 +1,6 @@
 ---
 id: techdocs-overview
-title: TechDocs Documentation
+title: TechDocs Overview
 sidebar_label: Overview
 # prettier-ignore
 description: TechDocs is Spotify’s homegrown docs-like-code solution built directly into Backstage
@@ -10,50 +10,37 @@ description: TechDocs is Spotify’s homegrown docs-like-code solution built dir
 
 <!-- Intro, backstory, etc.: -->
 
-TechDocs is Spotify’s homegrown docs-like-code solution built directly into Backstage. Engineers write their documentation in Markdown files which live together with their code - and with little configuration get a nice-looking doc site in Backstage.
+TechDocs is Spotify’s homegrown docs-like-code solution built directly into Backstage. Engineers write their
+documentation in Markdown files which live together with their code - and with little configuration get a nice-looking
+doc site in Backstage.
 
-Today, it is one of the core products in Spotify’s developer experience offering with 5000+ documentation sites and around 10000 average daily hits. Read more about TechDocs in its
-[announcement blog post](https://backstage.io/blog/2020/09/08/announcing-tech-docs).
+Today, it is one of the core products in Spotify’s developer experience offering with 5000+ documentation sites and
+around 10000 average daily hits. Read more about TechDocs origin story in its [announcement blog post](https://backstage.io/blog/2020/09/08/announcing-tech-docs).
 🎉
 
-## Features
+## Included Features
 
-- Deploy TechDocs no matter how your software environment is set up.
+- Deploy TechDocs for any environment.
 - Discover your Service's technical documentation from the Service's page in Backstage Catalog.
-- Create documentation-only sites for any purpose by just writing Markdown.
-- Take advantage of the [TechDocs Addon Framework](addons.md) to add features on top of the base docs-like-code experience.
-- Explore and take advantage of the large ecosystem of
-  [MkDocs plugins](https://www.mkdocs.org/user-guide/plugins/) to create a rich reading experience.
-- Search for and find docs.
+- Easily convert any Markdown into a hosted page within Backstage.
+- Take advantage of the [TechDocs Addon Framework](addons.md) to add features on top of the base docs-like-code
+  experience.
+- Explore and take advantage of the large ecosystem of [MkDocs plugins](https://www.mkdocs.org/user-guide/plugins/)
+  to create a rich reading experience.
+- Search for and find docs with a built-in search system.
 
-## Project roadmap
+## Future Ideas
 
-### Now
-
-No current plans.
-
-### Next
-
-No current plans.
-
-### Someday/Maybe
-
-- What can we do in TechDocs to help drive up documentation quality? We have many ideas, for example, a Trust Card with associated Trust Score and automatic triggering of documentation maintenance notifications.
+- What can we do in TechDocs to help drive up documentation quality? We have many ideas, for example, a Trust Card with
+  associated Trust Score and automatic triggering of documentation maintenance notifications.
 - Contribute to and deploy from a marketplace of TechDocs Addons
 - Addon: MDX (allows you to use JSX in your Markdown content)
 - Can we go static site generator agnostic?
-- Better integration with
-  [Scaffolder V2](https://github.com/backstage/backstage/issues/2771) (e.g. easy to choose and apply documentation template with Software Templates)
-- Possible to configure several aspects about TechDocs (e.g. URL, homepage,
-  theme)
+- Better integration with [Scaffolder V2](https://github.com/backstage/backstage/issues/2771) (e.g. easy to choose and
+  apply documentation template with Software Templates)
+- Possible to configure several aspects about TechDocs (e.g. URL, homepage, theme)
 
-### Done
-
-See [Done](#done) below for a list of completed roadmap items.
-
-## Supported
-
-The following sections show the source code hosting providers and file storage providers that are currently supported by TechDocs.
+## 3rd Party Support
 
 See [TechDocs Architecture](architecture.md) to get an overview of where the below providers are used.
 
@@ -83,7 +70,7 @@ See [TechDocs Architecture](architecture.md) to get an overview of where the bel
 
 [Reach out to us](#get-involved) if you want to request more providers.
 
-## Tech stack
+## Tech Stack
 
 | Stack                                           | Location                                                      |
 | ----------------------------------------------- | ------------------------------------------------------------- |
@@ -99,20 +86,20 @@ See [TechDocs Architecture](architecture.md) to get an overview of where the bel
 [techdocs/container]: https://github.com/backstage/techdocs-container
 [techdocs/cli]: https://github.com/backstage/backstage/blob/master/packages/techdocs-cli
 
-## Get involved
+## Get Involved
 
 Reach out to us in the **#docs-like-code** channel of our
 [Discord chatroom](https://github.com/backstage/backstage#community).
 
-## Done
+## Completed
 
-**Alpha release**
+### Alpha release
 
 [Milestone](https://github.com/backstage/backstage/milestone/16)
 
 - Alpha of TechDocs that you can use end to end - and contribute to.
 
-**Beta release**
+### Beta release
 
 [Milestone](https://github.com/backstage/backstage/milestone/29)
 
@@ -120,9 +107,10 @@ Reach out to us in the **#docs-like-code** channel of our
   storage solutions, source control systems).
 - [Instructions for upgrading from Alpha to Beta](how-to-guides.md#how-to-migrate-from-techdocs-alpha-to-beta)
 
-**v1.0**
+### v1.0
 
-TechDocs promoted to v1.0! To understand how this change affects the package, check out our [versioning policy](https://backstage.io/docs/overview/versioning-policy).
+TechDocs promoted to v1.0! To understand how this change affects the package, check out our
+[versioning policy](https://backstage.io/docs/overview/versioning-policy).
 
 TechDocs packages:
 
@@ -131,7 +119,7 @@ TechDocs packages:
 - @backstage/plugin-techdocs-node
 - @techdocs/cli
 
-**TechDocs Addon Framework**
+#### TechDocs Addon Framework
 
 With the Backstage 1.2 release, we introduced the [TechDocs Addon Framework](https://backstage.io/blog/2022/05/13/techdocs-addon-framework) for augmenting the TechDocs experience at read-time.
 

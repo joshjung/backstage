@@ -7,36 +7,29 @@ description: Troubleshooting for TechDocs
 
 ## Documentation not found when generating
 
-This may happen if you have TechDocs set up using the "out-of-the-box"
-configuration, wherein documentation is built dynamically by the TechDocs
-backend, and your TechDocs files are being pulled from a git-based source
-control management system (e.g. GitHub, BitBucket, etc).
+This may happen if you have TechDocs set up using the "out-of-the-box" `local` configuration, where documentation is
+built dynamically by the TechDocs backend and your TechDocs Markdown files are being pulled from a git-based source
+control management system (e.g. GitHub, BitBucket, etc.).
 
-If you experience this, check that TechDocs-related files (e.g. markdown,
-assets, or the `mkdocs.yml` file) are not matched by an `export-ignore`
-attribute in a `.gitattributes` file in the relevant repository.
+If you experience this, check that TechDocs-related files (e.g. markdown, assets, or the `mkdocs.yml` file) are not
+matched by an `export-ignore` attribute in a `.gitattributes` file in the relevant repository. TechDocs' backend is not
+able to see these files, and therefore may generate partial (or no) TechDocs as a result.
 
-TechDocs' backend is not able to see such files, and therefore may generate
-partial (or no) TechDocs as a result.
-
-You'll need to reconsider how you distribute tar archives based on your source
-code (and how you prevent internal documentation from being included in those
-archives). Alternatively, you could consider switching to the "recommended"
+You'll need to reconsider how you distribute `.tar` archives based on your source code (and how you prevent internal
+documentation from being included in those archives). Alternatively, you could consider switching to the "recommended"
 TechDocs architecture (documentation generated and published in CI/CD).
 
 ## MkDocs Build Errors
 
-Using the [TechDocs CLI](https://github.com/backstage/techdocs-cli), you can
-troubleshoot MkDocs build issues locally. Note this requires you have Docker
-available to launch images. First, `git clone` the target repository locally,
-then in the root of the repository, run:
+Using the [TechDocs CLI](https://github.com/backstage/techdocs-cli), you can troubleshoot MkDocs build issues locally.
+Note this requires you have Docker available to launch images. First, `git clone` the target repository locally, then in
+the root of the repository, run:
 
 ```
 npx @techdocs/cli serve
 ```
 
-For example, if you have forgotten to put an MkDocs configuration file in your
-repo, the resulting error will be:
+For example, if you have forgotten to put an MkDocs configuration file in your repo, the resulting error will be:
 
 ```
 npx: installed 278 in 9.089s
@@ -71,17 +64,12 @@ INFO    -  Start detecting changes
 
 ## PlantUML with `svg_object` doesn't render
 
-The [plantuml-markdown](https://pypi.org/project/plantuml-markdown/) MkDocs
-plugin available in
-[`mkdocs-techdocs-core`](https://github.com/backstage/mkdocs-techdocs-core)
-supports different formats for rendering diagrams. TechDocs does however not
-support all of them.
+The [plantuml-markdown](https://pypi.org/project/plantuml-markdown/) MkDocs plugin available in
+[`mkdocs-techdocs-core`](https://github.com/backstage/mkdocs-techdocs-core) supports different formats for rendering
+diagrams. TechDocs does however not support all of them.
 
-The `svg_object` format renders a diagram as an HTML `<object>` tag but this is
-not allowed as it enables bad actors to inject malicious content into
-documentation pages. See
-[CVE-2021-32661](https://github.com/advisories/GHSA-gg96-f8wr-p89f) for more
-details.
+The `svg_object` format renders a diagram as an HTML `<object>` tag but this is not allowed as it enables bad actors to
+inject malicious content into documentation pages. See
+[CVE-2021-32661](https://github.com/advisories/GHSA-gg96-f8wr-p89f) for more details.
 
-Instead use `svg_inline` which renders as an `<svg>` tag and provides the same
-benefits as `svg_object`.
+Instead, use `svg_inline` which renders as an `<svg>` tag and provides the same benefits as `svg_object`.
